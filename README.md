@@ -1,2 +1,2 @@
-# GradShow
-An archival web of graduation team, from 2026 Hongik University Visual Communicatioin Design Graduation show
+# Jang, Jang, Jang
+Jang, Jang, Jang: an web magazine of archiving tabooed hobbies
