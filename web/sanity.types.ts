@@ -190,6 +190,13 @@ export type POSTS_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../web/src/sanity/queries.ts
+// Variable: POST_SLUGS_QUERY
+// Query: *[_type == "post" && defined(slug.current)]{"slug": slug.current}
+export type POST_SLUGS_QUERY_RESULT = Array<{
+  slug: string | null;
+}>;
+
+// Source: ../web/src/sanity/queries.ts
 // Variable: POST_QUERY
 // Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    excerpt,    publishedAt,    body  }
 export type POST_QUERY_RESULT = {
@@ -222,6 +229,7 @@ export type POST_QUERY_RESULT = {
 declare global {
   interface SanityQueries {
     '\n  *[_type == "post" && defined(slug.current)]\n    | order(coalesce(publishedAt, _createdAt) desc) {\n      _id,\n      title,\n      "slug": slug.current,\n      excerpt,\n      publishedAt\n    }\n': POSTS_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current)]{"slug": slug.current}\n': POST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    publishedAt,\n    body\n  }\n': POST_QUERY_RESULT;
   }
 }

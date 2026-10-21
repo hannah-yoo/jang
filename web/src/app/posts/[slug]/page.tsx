@@ -3,15 +3,28 @@ import Link from 'next/link'
 import {notFound} from 'next/navigation'
 import {PortableText} from 'next-sanity'
 import {client} from '@/sanity/client'
-import {POST_QUERY} from '@/sanity/queries'
+import {POST_QUERY, POST_SLUGS_QUERY} from '@/sanity/queries'
 
 type PostPageProps = {
   params: Promise<{slug: string}>
 }
 
+const placeholderSlug = 'to-be-indicated'
+
+export const dynamicParams = false
+
+export async function generateStaticParams() {
+  const posts = await client.fetch(POST_SLUGS_QUERY)
+  return posts.length > 0 ? posts.map(({slug}) => ({slug})) : [{slug: placeholderSlug}]
+}
+
 export async function generateMetadata({params}: PostPageProps): Promise<Metadata> {
   const {slug} = await params
   const post = await client.fetch(POST_QUERY, {slug}, {next: {revalidate: 30}})
+
+  if (!post && slug === placeholderSlug) {
+    return {title: 'TO BE INDICATED | JANG', description: 'TO BE INDICATED'}
+  }
 
   return {
     title: post ? `${post.title} | 장, 장, 장` : '글을 찾을 수 없습니다 | 장, 장, 장',
@@ -22,6 +35,17 @@ export async function generateMetadata({params}: PostPageProps): Promise<Metadat
 export default async function PostPage({params}: PostPageProps) {
   const {slug} = await params
   const post = await client.fetch(POST_QUERY, {slug}, {next: {revalidate: 30}})
+
+  if (!post && slug === placeholderSlug) {
+    return (
+      <main className="mx-auto w-full max-w-3xl px-6 py-12 sm:px-10 sm:py-20">
+        <Link className="text-sm underline underline-offset-4" href="/">
+          ← JANG
+        </Link>
+        <h1 className="mt-12 text-5xl font-bold">TO BE INDICATED</h1>
+      </main>
+    )
+  }
 
   if (!post) notFound()
 

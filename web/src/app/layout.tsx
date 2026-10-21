@@ -1,29 +1,25 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type {Metadata} from 'next'
+import localFont from 'next/font/local'
+import './globals.css'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const pyeojinGothic = localFont({
+  src: [
+    {path: '../../public/fonts/PyeojinGothic-Light.woff2', weight: '300', style: 'normal'},
+    {path: '../../public/fonts/PyeojinGothic-Bold.woff2', weight: '700 900', style: 'normal'},
+  ],
+  variable: '--font-pyeojin',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "장, 장, 장 — 웹매거진",
-  description: "금기시된 취미와 주변의 이야기를 기록하는 웹매거진",
-};
+  title: 'JANG — Web Magazine',
+  description: 'TO BE INDICATED',
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="ko" className={`${pyeojinGothic.variable} h-full antialiased`}>
+      <body>{children}</body>
     </html>
-  );
+  )
 }
